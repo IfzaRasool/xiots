@@ -18,6 +18,11 @@ a {
 * {
   box-sizing: border-box;
 }
+.container{
+  width: 1425px;
+  border: 5px solid aqua;
+  margin: 0px 52px;
+}
 
 @media (prefers-color-scheme: dark) {
   html {
@@ -27,4 +32,5 @@ a {
     color: white;
     background: black;
   }
+
 }
