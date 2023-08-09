@@ -5,7 +5,6 @@ const BASE_URL = 'https://jsonplaceholder.typicode.com/posts';
 const postReducer = (state = [], action) => {
   switch (action.type) {
     case GET_POST:
-      console.log(action.payload);
       return action.payload;
     default:
       return state;
@@ -21,16 +20,11 @@ export async function fetchData(dispatch) {
   // try {
   const response = await fetch(BASE_URL);
   const pdata = await response.json();
-  console.log(pdata)
   const postData = pdata.map((element) => ({
     id: element.id,
     title: element.title,
     body: element.body,
   }));
   dispatch(getPost(postData));
-
-  // }catch (error) {
-  //       dispatch({ type: 'FETCH_FAILURE', payload: error.message });
-  //     }
 }
 export default postReducer;

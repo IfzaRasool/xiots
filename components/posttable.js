@@ -1,14 +1,118 @@
 import React, { useState } from 'react';
-import { PropTypes } from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
-
+import trash from '../assets/trash-2.svg';
+import edit from '../assets/edit.svg';
+import Image from 'next/image';
 
 const PostTable = () => {
   const postStore = useSelector((state) => state.data);
 
+  const itemsPerPage = 4;
+  const totalItems = postStore.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+  const renderPageButtons = () => {
+    const pageButtons = [];
+    for (let i = 1; i <= Math.min(3, totalPages); i++) {
+      pageButtons.push(
+        <button
+          key={i}
+          onClick={() => handlePageChange(i)}
+          className={currentPage === i ? 'active' : ''}
+        >
+          <div className="w-10 mx-1 text-center text-white text-base font-normal leading-7 bg-yellow rounded-3xl h-10 px-4 pt-1 pb-1.">
+            {i}
+          </div>
+        </button>
+      );
+    }
+
+    if (totalPages > 3 && currentPage >= 3) {
+      pageButtons.push(
+        <button
+          key="left-arrow"
+          onClick={() => handlePageChange(currentPage - 1)}
+        >
+          <div className="w-10 mx-1 text-center text-white text-base font-normal leading-7 bg-neutral-900 rounded-3xl h-10 px-3 py-3">
+            <svg
+              width="13"
+              height="12"
+              viewBox="0 0 13 12"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                id="Vector"
+                d="M6.0625 10.0644L2.25 5.81444L6.0625 1.56444C6.1875 1.4186 6.25 1.25194 6.25 1.06444C6.25 0.856103 6.17708 0.668603 6.03125 0.501936C5.63542 0.231103 5.27083 0.251936 4.9375 0.564436L0.6875 5.28319C0.4375 5.61652 0.4375 5.94985 0.6875 6.28319L4.90625 11.0332C5.23958 11.3457 5.59375 11.3665 5.96875 11.0957C6.30208 10.7832 6.33333 10.4394 6.0625 10.0644ZM6.6875 5.28319C6.4375 5.61652 6.4375 5.94985 6.6875 6.28319L10.9062 11.0332C11.2396 11.3457 11.5938 11.3665 11.9688 11.0957C12.2812 10.7624 12.3021 10.4082 12.0312 10.0332L8.25 5.81444L12.0625 1.56444C12.1875 1.4186 12.25 1.25194 12.25 1.06444C12.25 0.856103 12.1771 0.668603 12.0312 0.501936C11.6562 0.231103 11.3021 0.251936 10.9688 0.564436L6.6875 5.28319Z"
+                fill="white"
+              />
+            </svg>
+          </div>
+        </button>
+      );
+
+      pageButtons.push(
+        <button key="ellipsis" disabled>
+          <div>...</div>
+        </button>
+      );
+      pageButtons.push(
+        <button key={totalPages} onClick={() => handlePageChange(totalPages)}>
+          <div className="w-10 mx-1 text-center text-white text-base font-normal leading-7 bg-neutral-900 rounded-3xl h-10 px-2 pt-1 pb-1">
+            {totalPages}
+          </div>
+        </button>
+      );
+    }
+
+    if (currentPage < totalPages) {
+      pageButtons.push(
+        <button
+          key="right-arrow"
+          onClick={() => handlePageChange(currentPage + 1)}
+        >
+          <div className="mx-1 text-center text-white text-base font-normal leading-7 bg-neutral-900 rounded-3xl h-10 px-3 py-3 w-10">
+            <svg
+              width="13"
+              height="12"
+              viewBox="0 0 13 12"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                id="Vector"
+                d="M6.68862 1.53319L10.5011 5.81444L6.68862 10.0644C6.56362 10.2103 6.50112 10.3769 6.50112 10.5644C6.50112 10.7728 6.57403 10.9603 6.71987 11.1269C7.09487 11.3978 7.44903 11.3769 7.78237 11.0644L12.0011 6.31444C12.2511 5.9811 12.2511 5.64777 12.0011 5.31444L7.78237 0.564436C7.46987 0.251936 7.1157 0.231103 6.71987 0.501936C6.4282 0.856103 6.41778 1.19985 6.68862 1.53319ZM6.06362 6.31444C6.31362 5.9811 6.31362 5.64777 6.06362 5.31444L1.81362 0.564436C1.48028 0.251936 1.12612 0.231103 0.751116 0.501936C0.438616 0.856103 0.417783 1.19985 0.688616 1.53319L4.50112 5.81444L0.688616 10.0644C0.563616 10.2103 0.501116 10.3769 0.501116 10.5644C0.501116 10.7728 0.574033 10.9603 0.719866 11.1269C1.09487 11.3978 1.44903 11.3769 1.78237 11.0644L6.06362 6.31444Z"
+                fill="white"
+              />
+            </svg>
+          </div>
+        </button>
+      );
+    }
+
+    return pageButtons;
+  };
+
+  const startIdx = (currentPage - 1) * itemsPerPage;
+  const currentItems = postStore.slice(startIdx, startIdx + itemsPerPage);
+  // end pagination
+
+  // search
+  const [search, setSearch] = useState('');
+  const filteredPosts = currentItems .filter(
+    (post) =>
+      post.title.toLowerCase().includes(search.toLowerCase()) ||
+      post.body.toLowerCase().includes(search.toLowerCase())
+  );
   return (
     <div className="p-20">
-      <div className=" h-96 relative ">
+      <div className=" h-[581.97px] relative ">
         <div className="w-72 h-96 left-0 top-0 absolute">
           <div className="w-72 h-96 left-[12px] top-0 absolute bg-white rounded-lg shadow-md">
             <div className="w-60 h-20 left-[20px] top-[20px] absolute border-b border-black border-opacity-10">
@@ -43,32 +147,19 @@ const PostTable = () => {
             </div>
           </div>
         </div>
-        <div className=" h-96 left-[312px] top-0 absolute bg-white rounded-lg shadow-md">
-          <div className='flex justify-between px-5 py-5'>
-          <div className="text-neutral-900 text-xl font-bold leading-normal">
-              Posts
-            </div>
-        <input
-        type="text"
-        placeholder="Search..."
-        className="w-[216px] h-[46px] p-2 mb-4 border rounded"
-      />
-      </div>
-          {/* <div className=" pb-4 left-[20px] top-[15px] absolute border-b border-black border-opacity-10 justify-between items-center gap-96 inline-flex">
+        <div className=" h-[464px] left-[312px] top-0 absolute bg-white rounded-lg shadow-md">
+          <div className="flex justify-between px-5 py-5">
             <div className="text-neutral-900 text-xl font-bold leading-normal">
               Posts
             </div>
-            <div className="w-52 h-11 relative">
-              <div className="w-52 pl-9 pr-3 py-3 left-[1px] top-[1px] absolute bg-white rounded-lg border border-gray-300 justify-start items-start inline-flex">
-                <div className="h-5 pr-28 justify-start items-start flex">
-                  <div className="text-gray-500 text-base font-normal">
-                    Search...
-                  </div>
-                </div>
-              </div>
-              <div className="w-4 pr-px left-[12px] top-[31px] absolute justify-start items-start inline-flex" />
-            </div>
-          </div> */}
+            <input
+              type="text"
+              placeholder="Search..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="w-[216px] h-[46px] p-2 mb-4 border rounded"
+            />
+          </div>
           <div className=" pb-4 left-[20px] top-[92px] justify-start items-start inline-flex">
             <div className="pb-px flex-col justify-start items-start inline-flex">
               <table className="w-full border-collapse">
@@ -82,195 +173,31 @@ const PostTable = () => {
                 </thead>
 
                 <tbody>
-                  {postStore.map(post => (
-                  <tr key={post.id}>
-                    <td className="border p-2">{post.id}</td>
-                    <td className="border p-2">{post.title}</td>
-                    <td className="border p-2">{post.body}</td>
-                    <td className="border p-2">
-                      <button className="px-4 py-2 bg-blue-500 text-white rounded">
-                        Edit
-                      </button>
-                      <button className="px-4 mx-6 py-2 bg-blue-500 text-white rounded">
-                        Delete
-                      </button>
-                      {/* Add more actions here */}
-                    </td>
-                  </tr>
+                  {filteredPosts.map((post) => (
+                    <tr key={post.id}>
+                      <td className="border p-2">{post.id}</td>
+                      <td className="border p-2">{post.title}</td>
+                      <td className="border p-2">{post.body}</td>
+                      <td className="border p-2">
+                        <button>
+                          <Image src={edit} alt="" />
+                        </button>
+                        <button>
+                          <Image src={trash} alt="" />
+                        </button>
+                        {/* Add more actions here */}
+                      </td>
+                    </tr>
                   ))}
                 </tbody>
               </table>
             </div>
           </div>
-          <div className=" h-10 left-[19.50px] top-[400.94px] absolute">
-            <div className="px-2.5 left-[290px] top-0 absolute justify-start items-start inline-flex">
-              <div className="w-10 h-10 relative bg-neutral-900 rounded-3xl">
-                <div className="w-3.5 pr-0.5 py-0.5 left-[13px] top-[10px] absolute justify-start items-start inline-flex">
-                  <svg
-                    width="13"
-                    height="12"
-                    viewBox="0 0 13 12"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      id="Vector"
-                      d="M6.0625 10.0644L2.25 5.81444L6.0625 1.56444C6.1875 1.4186 6.25 1.25194 6.25 1.06444C6.25 0.856103 6.17708 0.668603 6.03125 0.501936C5.63542 0.231103 5.27083 0.251936 4.9375 0.564436L0.6875 5.28319C0.4375 5.61652 0.4375 5.94985 0.6875 6.28319L4.90625 11.0332C5.23958 11.3457 5.59375 11.3665 5.96875 11.0957C6.30208 10.7832 6.33333 10.4394 6.0625 10.0644ZM6.6875 5.28319C6.4375 5.61652 6.4375 5.94985 6.6875 6.28319L10.9062 11.0332C11.2396 11.3457 11.5938 11.3665 11.9688 11.0957C12.2812 10.7624 12.3021 10.4082 12.0312 10.0332L8.25 5.81444L12.0625 1.56444C12.1875 1.4186 12.25 1.25194 12.25 1.06444C12.25 0.856103 12.1771 0.668603 12.0312 0.501936C11.6562 0.231103 11.3021 0.251936 10.9688 0.564436L6.6875 5.28319Z"
-                      fill="white"
-                    />
-                  </svg>
-                </div>
-              </div>
-            </div>
-            <div className="pr-2.5 left-[349px] top-0 absolute justify-start items-start inline-flex">
-              <div className="h-10 px-4 pt-1 pb-1.5 bg-yellow rounded-3xl justify-center items-start flex">
-                <div className="text-center text-white text-base font-normal leading-7">
-                  1
-                </div>
-              </div>
-            </div>
-            <div className="pr-2.5 left-[398px] top-0 absolute justify-start items-start inline-flex">
-              <div className="h-10 px-4 pt-1 pb-1.5 bg-neutral-900 rounded-3xl justify-center items-start flex">
-                <div className="text-center text-white text-base font-normal leading-7">
-                  2
-                </div>
-              </div>
-            </div>
-            <div className="pr-2.5 left-[447px] top-0 absolute justify-start items-start inline-flex">
-              <div className="h-10 px-4 pt-1 pb-1.5 bg-neutral-900 rounded-3xl justify-center items-start flex">
-                <div className="text-center text-white text-base font-normal leading-7">
-                  3
-                </div>
-              </div>
-            </div>
-            <div className="pr-2.5 left-[496px] top-0 absolute justify-start items-start inline-flex">
-              <div className="w-10 h-10 relative bg-neutral-900 rounded-3xl">
-                <div className="w-3.5 pr-0.5 py-0.5 left-[13px] top-[10px] absolute justify-start items-start inline-flex">
-                  <svg
-                    width="13"
-                    height="12"
-                    viewBox="0 0 13 12"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      id="Vector"
-                      d="M6.68862 1.53319L10.5011 5.81444L6.68862 10.0644C6.56362 10.2103 6.50112 10.3769 6.50112 10.5644C6.50112 10.7728 6.57403 10.9603 6.71987 11.1269C7.09487 11.3978 7.44903 11.3769 7.78237 11.0644L12.0011 6.31444C12.2511 5.9811 12.2511 5.64777 12.0011 5.31444L7.78237 0.564436C7.46987 0.251936 7.1157 0.231103 6.71987 0.501936C6.4282 0.856103 6.41778 1.19985 6.68862 1.53319ZM6.06362 6.31444C6.31362 5.9811 6.31362 5.64777 6.06362 5.31444L1.81362 0.564436C1.48028 0.251936 1.12612 0.231103 0.751116 0.501936C0.438616 0.856103 0.417783 1.19985 0.688616 1.53319L4.50112 5.81444L0.688616 10.0644C0.563616 10.2103 0.501116 10.3769 0.501116 10.5644C0.501116 10.7728 0.574033 10.9603 0.719866 11.1269C1.09487 11.3978 1.44903 11.3769 1.78237 11.0644L6.06362 6.31444Z"
-                      fill="white"
-                    />
-                  </svg>
-                </div>
-              </div>
-            </div>
-          </div>
+{/* pagination */}
+            <div className="flex mt-10 justify-center">{renderPageButtons()}</div>
         </div>
       </div>
     </div>
   );
 };
-
-
-
-
-// const PostTable = ({id, title,body}) => {
-//   const initialPosts = [
-//     { firstNo: id, heading: title, description: body },
-//     // { id: 2, title: 'Title 2', description: 'Description 2' },
-//     // { id: 2, title: 'Title 2', description: 'Description 2' },
-
-//     // Add more posts here
-//   ];
-//   const [search, setSearch] = useState('');
-// const [posts, setPosts] = useState(initialPosts);
-// const filteredPosts = posts.filter(
-//   post =>
-//     post.heading.toLowerCase().includes(search.toLowerCase()) ||
-//     post.description.toLowerCase().includes(search.toLowerCase())
-// );
-
-
-//   return (
-//     <div className="p-4">
-      // <input
-      //   type="text"
-      //   placeholder="Search..."
-      //   value={search}
-      //   onChange={e => setSearch(e.target.value)}
-      //   className="w-full p-2 mb-4 border rounded"
-      // />
-//       <table className="w-full border-collapse">
-//         <thead>
-//           <tr>
-//             <th className="border p-2">Post ID</th>
-//             <th className="border p-2">Title</th>
-//             <th className="border p-2">Description</th>
-//             <th className="border p-2">Action</th>
-//           </tr>
-//         </thead>
-//         <tbody>
-//           {filteredPosts.map(post => (
-//             <tr key={id}>
-//               <td className="border p-2">{post.firstNo}</td>
-//               <td className="border p-2">{post.heading}</td>
-//               <td className="border p-2">{post.description}</td>
-//               <td className="border p-2">
-//                 <button className="px-4 py-2 bg-blue-500 text-white rounded">
-//                   Edit
-//                 </button>
-//                 <button className="px-4 mx-6 py-2 bg-blue-500 text-white rounded">
-//                   Delete
-//                 </button>
-//                 {/* Add more actions here */}
-//               </td>
-//             </tr>
-//           ))}
-//         </tbody>
-//       </table>
-//     </div>
-
-//   );
-// };
-// PostTable.propTypes = {
-//   id: PropTypes.number.isRequired,
-//   title: PropTypes.string.isRequired,
-//   body: PropTypes.string.isRequired,
-//   onRemove: PropTypes.func.isRequired,
-// };
 export default PostTable;
-
-// import React, { useEffect } from 'react';
-// import { useDispatch, useSelector } from 'react-redux';
-// import { fetchPosts } from '../redux/actions';
-
-// const PostTable = () => {
-//   const dispatch = useDispatch();
-//   const postStore = useSelector((state) => state.postReducer);
-
-// useEffect(() => {
-//   dispatch(fetchPosts());
-// }, [dispatch]);
-
-// if (loading) {
-//   return <div>Loading...</div>;
-// }
-
-// if (error) {
-//   return <div>Error: {error}</div>;
-// }
-
-//   return (
-//     <div>
-//       <h1>Posts</h1>
-//       <ul>
-//         {postStore.map((post) => (
-//           <li key={post.id}>
-//             <h2>{post.title}</h2>
-//             <p>{post.body}</p>
-//           </li>
-//         ))}
-//       </ul>
-//     </div>
-//   );
-// };
-
-// export default PostTable;
