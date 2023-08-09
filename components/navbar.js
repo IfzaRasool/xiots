@@ -131,6 +131,7 @@ const NavBar = () => {
             </Link>
           </div>
         </div>
+
         <div className="bg-primary max-w-full text-lightgrey">
           <div className="container">
             <div className="hidden md:flex ">
