@@ -7,7 +7,6 @@ import { useSelector, useDispatch } from 'react-redux';
 
 const Posts = () => {
   const postStore = useSelector((state) => state.data);
-console.log(postStore);
 
     // const dispatch = useDispatch();
   return (

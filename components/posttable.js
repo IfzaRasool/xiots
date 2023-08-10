@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import trash from '../assets/trash-2.svg';
 import edit from '../assets/edit.svg';
 import Image from 'next/image';
+import EditModal from './editModal';
 
 const PostTable = () => {
   const postStore = useSelector((state) => state.data);
@@ -105,11 +106,44 @@ const PostTable = () => {
 
   // search
   const [search, setSearch] = useState('');
-  const filteredPosts = currentItems .filter(
+  const filteredPosts = currentItems.filter(
     (post) =>
       post.title.toLowerCase().includes(search.toLowerCase()) ||
       post.body.toLowerCase().includes(search.toLowerCase())
   );
+
+  // edit
+  const [editingPost, setEditingPost] = useState(null);
+
+  const openEditModal = (post) => {
+    setEditingPost(post);
+  };
+
+  const closeEditModal = () => {
+    setEditingPost(null);
+  };
+
+  const saveEditedPost = (editedPost) => {
+    // Find the index of the edited post
+    const index = posts.findIndex((post) => post.id === editedPost.id);
+    if (index !== -1) {
+      // Update the posts array with the edited post
+      const updatedPosts = [...posts];
+      updatedPosts[index] = editedPost;
+      setPosts(updatedPosts);
+    }
+    closeEditModal();
+  };
+// delete
+const [posts, setPosts] = useState(filteredPosts);
+
+
+const handleRemoveClick = (postId) => {
+  // console.log(postId)
+  // Remove the post with the given ID from the state
+  setPosts(posts.filter((post) => post.id !== postId));
+};
+
   return (
     <div className="p-20">
       <div className=" h-[581.97px] relative ">
@@ -173,16 +207,16 @@ const PostTable = () => {
                 </thead>
 
                 <tbody>
-                  {filteredPosts.map((post) => (
+                  {posts.map((post) => (
                     <tr key={post.id}>
                       <td className="border p-2">{post.id}</td>
                       <td className="border p-2">{post.title}</td>
                       <td className="border p-2">{post.body}</td>
                       <td className="border p-2">
-                        <button>
+                        <button onClick={() => openEditModal(post)}>
                           <Image src={edit} alt="" />
                         </button>
-                        <button>
+                        <button onClick={() => handleRemoveClick(post.id)}>
                           <Image src={trash} alt="" />
                         </button>
                         {/* Add more actions here */}
@@ -191,10 +225,18 @@ const PostTable = () => {
                   ))}
                 </tbody>
               </table>
+              {editingPost && (
+                <EditModal
+                  isOpen={!!editingPost}
+                  onClose={closeEditModal}
+                  post={editingPost}
+                  onSave={saveEditedPost}
+                />
+              )}
             </div>
           </div>
-{/* pagination */}
-            <div className="flex mt-10 justify-center">{renderPageButtons()}</div>
+          {/* pagination */}
+          <div className="flex mt-10 justify-center">{renderPageButtons()}</div>
         </div>
       </div>
     </div>

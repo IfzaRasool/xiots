@@ -22,6 +22,7 @@ export default function Home() {
         <Hero />
         <OurService />
       </main>
+      <div id="root"></div>
     </div>
   );
 }
