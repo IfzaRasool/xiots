@@ -3,8 +3,8 @@ import React from 'react';
 const Footer = () => {
   return (
     <div>
-      <div className="w-full h-[465px] px-[52.50px] pt-[75px] pb-[50px] bg-slate-800 justify-start items-start inline-flex">
-        <div className="h-[340px] justify-between items-start flex">
+      <div className="w-full h-screen px-[52.50px] pt-[75px] pb-[50px] bg-slate-800 justify-start items-start inline-flex">
+        <div className="h-screen justify-between items-start flex sm:flex-row flex-col">
           <div className="h-[340px] px-3 pb-[104px] justify-start items-start flex">
             <div className="flex-col justify-start items-start gap-5 inline-flex">
               <div className="text-white text-xl font-semibold capitalize leading-relaxed">

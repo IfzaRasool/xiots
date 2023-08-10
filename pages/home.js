@@ -8,6 +8,7 @@ import HeroImg4 from '/assets/border.png';
 import London from '/assets/landon.png';
 import Marchin from '/assets/marchin.png';
 import Toronto from '/assets/toronto.png';
+import videoImg from '/assets/videoimg.png'
 
 const Hero = () => {
   return (
@@ -15,8 +16,8 @@ const Hero = () => {
       <div className="relative bg-cover bg-center text-white">
         <Image src={HeroImg} alt="Background Image" className="h-[870px]" />
         <div className="absolute inset-0 bg-opacity-70  bg-gray-900 ">
-          <div className="container grid grid-cols-2  items-center">
-            <div className="col-span-2 sm:col-span-1 mx-6">
+          <div className="grid grid-cols-2 items-center">
+            <div className="col-span-2 sm:col-span-1 mx-6 order-2 sm:order-1">
               <div className="text-gray-200 text-lg font-normal leading-relaxed">
                 Free changes for life.
               </div>
@@ -25,7 +26,7 @@ const Hero = () => {
                 <br />
                 Your Business
               </div>
-              <button class="flex justify-center items-center bg-yellow text-white  py-2 px-10 ">
+              <button class="hidden sm:flex justify-center items-center bg-yellow text-white  py-2 px-10 mt- ">
                 <svg
                   width="14"
                   height="12"
@@ -41,7 +42,7 @@ const Hero = () => {
                 <span className="mx-2">Book Call</span>
               </button>
             </div>
-            <div className="col-span-2 sm:col-span-1 text-white">
+            <div className="col-span-2 sm:col-span-1 text-white order-1 sm:order-2">
               <Image src={HeroImg2} alt="" />
             </div>
           </div>
@@ -49,7 +50,7 @@ const Hero = () => {
       </div>
 
       {/* new  row*/}
-      <div className="h-[190px] bg-white border-b border-black border-opacity-10 justify-around items-center gap-[21px] flex">
+      <div className="my-14 py-10 bg-white border-b border-black border-opacity-10 justify-around items-center gap-[21px] flex flex-col sm:flex-row">
         {/* best price */}
         <div className="flex gap-5">
           <svg
@@ -226,9 +227,9 @@ const Hero = () => {
       </div>
 
       {/* beskope software section */}
-      <div>
-        <div className="container grid grid-cols-2  items-center">
-          <div className="col-span-2 sm:col-span-1 mx-6">
+      <div className='container'>
+        <div className=" grid grid-cols-2  items-center">
+          <div className="col-span-2 sm:col-span-1 mx-6 order-1 sm:order-1">
             <div className="text-neutral-800 text-base font-bold capitalize leading-normal tracking-wide">
               Like always. Like never before.
             </div>
@@ -269,7 +270,7 @@ const Hero = () => {
             </button>
             {/* reviews */}
 
-            <div className="w-[681px] pr-[124px] pt-[50px] justify-start items-start gap-[89.16px] inline-flex">
+            <div className="w-[681px] pr-[124px] pt-[50px] justify-start items-start gap-[89.16px] inline-flex sm:flex-row flex-col">
               <div className="flex-col justify-start items-start gap-[15px] inline-flex">
                 <div className="px-[38.64px] justify-center items-start inline-flex">
                   <div className="h-[75px] pl-[22.94px] pr-[24.06px] pt-[13px] pb-[7px] bg-neutral-50 rounded-[37.50px] border border-neutral-200 justify-start items-start flex">
@@ -359,54 +360,13 @@ const Hero = () => {
               </div>
             </div>
           </div>
-          <div className="col-span-2 sm:col-span-1 text-white">
-            <div className="w-[526px] h-[526px] relative">
+          <div className="col-span-2 sm:col-span-1 text-white order-2 sm:order-2">
+            <div className="w-500 sm:w-200 h-auto relative">
               <Image
-                className="w-[526px] h-[526px] rounded-[263px] border border-neutral-200"
-                src={HeroImg3}
+                className="w-500 sm:w-200 h-auto"
+                src={videoImg}
                 alt=""
               />
-
-              <div className="w-[220px] h-[220px] left-[248.06px] top-[391.18px] absolute origin-top-left rotate-[-2.64deg] bg-yellow rounded-[110px] border-4 border-zinc-100">
-                <div className="left-[95.50px] top-[38.30px] absolute text-center text-white text-[44px] font-black leading-10">
-                  <svg
-                    width="36"
-                    height="47"
-                    viewBox="0 0 36 47"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M10.4128 33.3031C11.5841 34.4536 13.2429 34.9794 14.874 34.9042C15.99 34.8528 17.0083 34.5478 17.9289 33.9893L13.8851 45.1872C13.5813 46.0615 12.3913 46.3744 11.6689 45.6334L8.4282 42.5136L3.88622 42.8949C2.94586 43.0242 2.12579 42.0296 2.51153 41.0655L5.93573 31.3586C6.64623 31.8421 7.35277 32.2397 8.21915 32.3718C9.95981 32.8078 9.60456 32.5661 10.4128 33.3031ZM35.2192 39.559C35.6919 40.4836 34.9667 41.5493 34.0185 41.507L29.4607 41.5448L26.5204 44.9494C25.8693 45.7536 24.6555 45.5514 24.2726 44.7088L19.2166 33.93C20.1846 34.4015 21.2267 34.6116 22.3427 34.5602C23.9738 34.4851 25.5772 33.809 26.6378 32.5558C27.3749 31.7476 26.9575 32.0249 28.8224 31.4228C29.5871 31.2155 30.2541 30.7547 30.9172 30.208L35.2192 39.559ZM24.5724 30.6723C23.4259 31.9295 21.7169 32.1802 20.3038 31.385C19.7729 31.0654 19.0782 30.9253 18.3914 30.957C17.7905 30.9846 17.1116 31.188 16.6124 31.5551C15.2784 32.4768 13.5535 32.3842 12.3822 31.2337C11.0351 30.0053 10.8674 30.0991 8.95504 29.671C7.74132 29.4688 6.75351 28.568 6.35081 27.2961C5.63917 24.9201 5.82273 25.1697 3.94086 23.5358C3.0389 22.631 2.6362 21.3592 2.92423 20.1415C3.41444 17.7101 3.43026 18.0535 2.71466 15.5916C2.31591 14.4056 2.59999 13.102 3.41892 12.204C5.13866 10.3182 4.97883 10.5837 5.46905 8.15227C5.75708 6.9346 6.6579 5.94679 7.84394 5.54804C10.216 4.75055 9.88054 4.93806 11.6003 3.05224C12.4192 2.15423 13.6911 1.75153 14.9088 2.03956C17.2543 2.53373 16.9968 2.54559 19.287 1.8379C20.473 1.43916 21.7765 1.72323 22.6745 2.54216C24.5604 4.26191 24.2091 4.10603 26.6444 4.68209C27.8621 4.97012 28.8499 5.87094 29.2486 7.05698C29.9603 9.43301 29.7767 9.18338 31.6625 10.9031C32.5605 11.7221 32.9632 12.9939 32.6752 14.2116C32.189 16.7289 32.1731 16.3855 32.8848 18.7615C33.2835 19.9475 32.9995 21.2511 32.1845 22.2349C30.4608 24.0349 30.6206 23.7694 30.1304 26.2008C29.8463 27.5044 28.9455 28.4922 27.7555 28.8051C25.9764 29.4032 25.8008 29.3252 24.5724 30.6723ZM9.67335 17.2498C9.88292 21.7996 13.6585 25.325 18.2084 25.1154C22.6724 24.9098 26.108 21.0523 25.8984 16.5024C25.6888 11.9525 21.9132 8.4272 17.4492 8.63281C12.8993 8.84238 9.46378 12.6999 9.67335 17.2498Z"
-                      fill="white"
-                    />
-                  </svg>
-                </div>
-                <div className="h-[59.39px] pl-[5.62px] pr-[4.78px] pt-[0.10px] pb-[2.60px] left-[25.30px] top-[91.30px] absolute flex-col justify-start items-center gap-[2.70px] inline-flex">
-                  <div className="text-center text-white text-xl font-bold uppercase leading-[27px]">
-                    Won Award In
-                  </div>
-                  <div className="text-center text-white text-xl font-bold uppercase leading-[27px]">
-                    Year 2023
-                  </div>
-                </div>
-              </div>
-              <div className="w-[70px] pl-[23.63px] pr-[23.37px] left-[228px] top-[263px] absolute bg-stone-50 rounded-[35px] shadow justify-start items-start inline-flex">
-                <div className="text-center text-yellow-400 text-[26px] font-black leading-[70px]">
-                  <svg
-                    width="24"
-                    height="28"
-                    viewBox="0 0 24 28"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M22.2863 12.168C23.8605 13.1328 23.8605 15.418 22.2863 16.3828L4.41125 26.9453C2.78625 27.9102 0.755005 26.7422 0.755005 24.8125V3.6875C0.755005 1.60547 2.9386 0.742188 4.41125 1.60547L22.2863 12.168Z"
-                      fill="#FECE01"
-                    />
-                  </svg>
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -439,8 +399,8 @@ const Hero = () => {
                 </div>
               </div>
             </div>
-            <div className="w-[1320px] h-[346px] left-0 top-[208px] absolute">
-              <div className="w-[440px] h-[346px] left-0 top-0 absolute">
+            <div className="w-[1320px] h-[346px] left-0 top-[208px] absolute grid grid-cols-3 items-center">
+              <div className="w-[440px] h-[346px] left-0 top-0 absolute order-2 sm:order-1">
                 <div className="w-[416px] px-[50px] left-[12px] top-0 absolute justify-center items-start inline-flex">
                   <Image
                     className="w-[316px] h-[316px] relative rounded-[158px] border border-white"
@@ -463,7 +423,7 @@ const Hero = () => {
                   </div>
                 </div>
               </div>
-              <div className="w-[440px] h-[346px] left-[440px] top-0 absolute">
+              <div className="w-[440px] h-[346px] left-[440px] top-0 absolute order-3 sm:order-">
                 <div className="w-[416px] px-[50px] left-[12px] top-0 absolute justify-center items-start inline-flex">
                   <Image
                     className="w-[316px] h-[316px] relative rounded-[158px] border border-white"
@@ -486,7 +446,7 @@ const Hero = () => {
                   </div>
                 </div>
               </div>
-              <div className="w-[440px] h-[346px] left-[880px] top-0 absolute">
+              <div className="w-[440px] h-[346px] left-[880px] top-0 absolute order-1 sm:order-1">
                 <div className="w-[416px] px-[50px] left-[12px] top-0 absolute justify-center items-start inline-flex">
                   <Image
                     className="w-[316px] h-[316px] relative rounded-[158px] border border-white"

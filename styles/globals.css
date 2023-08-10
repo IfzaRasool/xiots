@@ -19,9 +19,11 @@ a {
   box-sizing: border-box;
 }
 .container{
-  width: 1425px;
-  border: 5px solid aqua;
   margin: 0px 52px;
+  @media only screen and (max-width: 425px) {
+    margin: 0px 5px;
+  }
+
 }
 
 @media (prefers-color-scheme: dark) {

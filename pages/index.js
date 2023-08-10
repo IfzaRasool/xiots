@@ -14,15 +14,14 @@ export default function Home() {
     <div>
       <Head>
         <title>Demo Test Ifza</title>
-        <meta name="description" content="Xiots Services" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main>
+      <main className='w-full'>
         <Hero />
         <OurService />
       </main>
-      <div id="root"></div>
     </div>
   );
 }
